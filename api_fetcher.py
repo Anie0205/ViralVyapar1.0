@@ -53,13 +53,3 @@ def fetch_seo_data(keywords):
     df.to_csv(OUTPUT_FILE, index=False)
     print(f"✅ Data saved to {OUTPUT_FILE}")
 
-# Run the script
-if __name__ == "__main__":
-    keywords = [
-        "best seo practices",
-        "seo tools 2025",
-        "keyword research tips",
-        "backlink strategies",
-        "content optimization"
-    ]
-    fetch_seo_data(keywords)
