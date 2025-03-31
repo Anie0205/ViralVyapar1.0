@@ -1,67 +1,41 @@
-import os
 import pandas as pd
-from transformers import pipeline
-from joblib import load
+import numpy as np
+import random
 
-MODEL_DIR = "models"
+# ✅ Paths
+SEO_CSV_PATH = "data/seo_data.csv"
+ANALYSIS_OUTPUT_PATH = "output/seo_analysis.json"
 
-# Load the ML models
-ctr_model = load(os.path.join(MODEL_DIR, "ctr_model.pkl"))
-difficulty_model = load(os.path.join(MODEL_DIR, "keyword_difficulty.pkl"))
+# ✅ Simulated difficulty and CTR estimation functions
+def estimate_difficulty(query):
+    """Simulate keyword difficulty estimation (ML placeholder)."""
+    return round(np.random.uniform(10, 90), 2)  # Simulate difficulty score
 
-# Sentiment analysis pipeline (for content evaluation)
-sentiment_analyzer = pipeline("sentiment-analysis")
+def estimate_ctr(position):
+    """Simulate CTR estimation based on position."""
+    base_ctr = {1: 30, 2: 20, 3: 15, 4: 10, 5: 7, 6: 5, 7: 4, 8: 3, 9: 2, 10: 1}
+    return base_ctr.get(position, np.random.uniform(0.5, 5))
 
-def analyze_seo(file_path):
-    """Analyze SEO data from the provided CSV file."""
+# ✅ SEO Analysis Function
+def analyze_seo(csv_file):
+    """Analyzes SEO data and appends difficulty & CTR to the dataset."""
+    df = pd.read_csv(csv_file)
     
-    print(f"✅ Analyzing SEO data from {file_path}...")
+    if "difficulty" not in df.columns or "ctr" not in df.columns:
+        print("\n🔍 Adding difficulty and CTR columns...")
 
-    # Load the dataset
-    df = pd.read_csv(file_path)
+        # ✅ Add missing columns
+        df["difficulty"] = df["query"].apply(estimate_difficulty)
+        df["ctr"] = df["position"].apply(estimate_ctr)
     
-    if df.empty:
-        print("❗ No data found in the CSV file.")
-        return
+    # ✅ Save to CSV
+    df.to_csv(SEO_CSV_PATH, index=False)
     
-    # Analyze each row
-    results = []
-    for _, row in df.iterrows():
-        keyword = row['keyword']
-        title = row['title']
-        snippet = row['snippet']
-
-        # --- Sentiment Analysis ---
-        sentiment = sentiment_analyzer(snippet)[0]
-        
-        # --- CTR & Difficulty Prediction ---
-        features = pd.DataFrame([[row['difficulty'], row['ctr']]], columns=['difficulty', 'ctr'])
-        predicted_ctr = ctr_model.predict(features)[0]
-        difficulty_score = difficulty_model.predict(features)[0]
-
-        # Store results
-        results.append({
-            "Keyword": keyword,
-            "Title": title,
-            "Snippet": snippet,
-            "Sentiment": sentiment['label'],
-            "Sentiment Score": sentiment['score'],
-            "Predicted CTR": predicted_ctr,
-            "Difficulty Score": difficulty_score
-        })
-
-    # Convert results to DataFrame
-    results_df = pd.DataFrame(results)
+    # ✅ Save to JSON
+    df.to_json(ANALYSIS_OUTPUT_PATH, orient="records", indent=4)
     
-    # Save the analysis results
-    output_file = "data/seo_analysis_results.csv"
-    results_df.to_csv(output_file, index=False)
-    print(f"✅ SEO analysis saved to {output_file}")
+    print(f"✅ SEO analysis saved to: {ANALYSIS_OUTPUT_PATH}")
 
-    # Display sample results
-    print("\n🔍 Sample Results:")
-    print(results_df.head())
-
-# Only run when executed directly
+# ✅ Main Execution
 if __name__ == "__main__":
-    analyze_seo("data/seo_data.csv")
+    analyze_seo(SEO_CSV_PATH)

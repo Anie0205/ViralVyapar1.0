@@ -27,16 +27,22 @@ def retrieve_similar(query, top_k=5):
     # ✅ Collect results
     results = []
     for i in range(top_k):
-        row = df.iloc[indices[0][i] % len(df)]
-        results.append({
-            "title": row['title'],
-            "snippet": row['snippet'],
-            "link": row['link'],
-            "difficulty": row['difficulty'],
-            "ctr": row['ctr'],
-            "score": distances[0][i]
-        })
-
+        idx = indices[0][i]
+        
+        # Ensure the index is within bounds
+        if 0 <= idx < len(df):
+            row = df.iloc[idx]
+            results.append({
+                "title": row['title'],
+                "snippet": row['snippet'],
+                "link": row['link'],
+                "difficulty": row['difficulty'],
+                "ctr": row['ctr'],
+                "score": distances[0][i]
+            })
+        else:
+            print(f"⚠️ Invalid index {idx}, skipping...")
+    
     return results
 
 # ✅ Example usage

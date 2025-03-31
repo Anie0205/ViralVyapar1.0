@@ -4,149 +4,57 @@ import pandas as pd
 from api_fetcher import fetch_seo_data
 from train import train_models
 from seo_analyser import analyze_seo
-from rag_generator import generate_seo_content_rag  # Import without circular reference
+from rag_generator import generate_seo_content_rag
+from query_generator import generate_queries
 
 # ✅ Constants
+SEO_DATA_FILE = "output/seo_analysis.json"
+SEO_QUERIES_DIR = "output"
 DATA_PATH = "data/seo_data.csv"
-ANALYSIS_PATH = "data/seo_analysis_results.csv"
-REPORT_PATH = "output/seo_report.txt"
-JSON_OUTPUT_PATH = "output/seo_optimized_content.json"
 
-# ✅ Ensure output directory exists
-os.makedirs("output", exist_ok=True)
+def main():
+    """Main workflow execution"""
 
-# ✅ Step 1: Fetch SEO data
-print("\n🔍 Fetching SEO data...")
-queries = [
-    "SEO strategies for health blogs",
-    "how to rank health tips on Google",
-    "top health-related keywords 2025",
-    "SEO optimization for medical websites",
-    "backlink strategies for healthcare sites"
-]
+    # ✅ Get Domain from User
+    domain = input("\n🌐 Enter the domain for SEO analysis (e.g., example.com): ").strip()
 
-fetch_seo_data(queries)
-
-# ✅ Step 2: Train Models
-print("\n⚙️  Training models...")
-train_models()
-
-# ✅ Step 3: SEO Analysis
-print("\n📊 Running SEO analysis...")
-analyze_seo(DATA_PATH)
-
-# ✅ Step 4: RAG-enhanced SEO content generation
-print("\n🔍 Running RAG-enhanced SEO content generation...")
-
-# Example RAG Query
-query = "Effective healthcare SEO strategies in 2025"
-print(f"\n🚀 Generating content for: {query}")
-
-# ✅ Generate SEO content with RAG
-results = generate_seo_content_rag(query, max_tokens=1000)
-
-def save_report(query, content, report_path):
-    """
-    Save the SEO content to a text report file.
-
-    Args:
-        query (str): The SEO query.
-        content (str): The generated content.
-        report_path (str): Path to save the report.
-    """
-    with open(report_path, "w", encoding="utf-8") as report_file:
-        report_file.write(f"SEO Report for: {query}\n")
-        report_file.write("=" * 50 + "\n\n")
-        report_file.write(content)
-
-    print(f"\n✅ SEO report saved to: {report_path}")
-
-def extract_top_keywords(csv_path, top_n=5):
-    """
-    Extracts top-performing keywords from SEO analysis results.
-
-    Args:
-        csv_path (str): Path to the SEO analysis results CSV.
-        top_n (int): Number of top keywords to extract.
-
-    Returns:
-        list: List of top keywords.
-    """
-    df = pd.read_csv(csv_path)
+    # ✅ Step 1: Generate Queries
+    print(f"\n🔍 Generating SEO queries for domain: {domain}")
     
-    # Sort by CTR and Difficulty Score to get top-performing keywords
-    df['score'] = df['Predicted CTR'] / (df['Difficulty Score'] + 1)  # Weighted score
-    top_keywords = df.sort_values(by='score', ascending=False).head(top_n)['Keyword'].tolist()
-    
-    print(f"\n✅ Top {top_n} Keywords:\n{top_keywords}")
-    return top_keywords
+    # Directly generate and retrieve the queries
+    queries = generate_queries(domain)
 
-def optimize_content(content, keywords):
-    """
-    Optimizes the content by strategically inserting top keywords.
+    # ✅ Save Queries to JSON
+    queries_file = f"{SEO_QUERIES_DIR}/{domain}_queries.json"
+    os.makedirs(SEO_QUERIES_DIR, exist_ok=True)  # Ensure output directory exists
 
-    Args:
-        content (str): The original SEO content.
-        keywords (list): List of top-performing keywords.
+    with open(queries_file, "w", encoding="utf-8") as f:
+        json.dump(queries, f, ensure_ascii=False, indent=4)
 
-    Returns:
-        str: Optimized content.
-    """
-    # Inserting top keywords at strategic positions
-    optimized_content = content
-    
-    # Insert keywords at the beginning, middle, and end
-    if len(keywords) >= 3:
-        optimized_content = (
-            f"{keywords[0]} - {optimized_content[:100]}\n\n"
-            f"{optimized_content[100:-100]}\n\n"
-            f"{keywords[1]} {keywords[2]} - {optimized_content[-100:]}"
-        )
-    else:
-        for kw in keywords:
-            optimized_content += f"\n\n{kw}"
+    print(f"\n✅ Queries saved to: {queries_file}")
 
-    return optimized_content
+    # ✅ Step 2: Fetch SEO Data
+    print("\n🔍 Fetching SEO data...")
+    fetch_seo_data(queries)
 
-def save_json_output(query, original_content, optimized_content, keywords, json_path):
-    """
-    Save the SEO-optimized content with keywords into a JSON file.
+    # ✅ Step 3: Run SEO Analysis
+    print("\n⚙️ Running SEO analysis...")
+    analyze_seo(DATA_PATH)
 
-    Args:
-        query (str): The SEO query.
-        original_content (str): The original RAG-generated content.
-        optimized_content (str): The content with keywords integrated.
-        keywords (list): List of top-performing keywords.
-        json_path (str): Path to save the JSON output.
-    """
-    output_data = {
-        "query": query,
-        "top_keywords": keywords,
-        "original_content": original_content,
-        "optimized_content": optimized_content
-    }
+    # ✅ Step 4: Train Models
+    print("\n⚙️ Training models...")
+    train_models()
 
-    with open(json_path, "w", encoding="utf-8") as json_file:
-        json.dump(output_data, json_file, indent=4)
+    # ✅ Step 5: Generate RAG-enhanced Content
+    print("\n🚀 Generating RAG-enhanced content...")
+    content = generate_seo_content_rag("Latest industry insights", max_tokens=1000)
 
-    print(f"\n✅ SEO-optimized content saved to: {json_path}")
+    print("\n✅ Generated SEO Content:\n")
+    print(content)
+
+    # ✅ Save analysis results
+    print(f"\n✅ SEO analysis results saved to: {SEO_DATA_FILE}")
 
 
-# ✅ Extract top keywords
-top_keywords = extract_top_keywords(ANALYSIS_PATH)
-
-# ✅ Optimize the RAG-generated content
-optimized_content = optimize_content(results, top_keywords)
-
-# ✅ Save the report to a text file
-save_report(query, results, REPORT_PATH)
-
-# ✅ Save the optimized content to a JSON file
-save_json_output(query, results, optimized_content, top_keywords, JSON_OUTPUT_PATH)
-
-# ✅ Display and save the generated content
-print("\n✅ Generated SEO content:\n")
-print(results)
-
-# ✅ Save the report to a `.txt` file
-save_report(query, results, REPORT_PATH)
+if __name__ == "__main__":
+    main()
