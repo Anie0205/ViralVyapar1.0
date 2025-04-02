@@ -3,60 +3,70 @@ import requests
 import time
 import os
 from dotenv import load_dotenv
+from time import sleep
 
 # ✅ Load environment variables
 load_dotenv()
 
 # ✅ Constants
 DOMAIN_FILE = "output/competitor_domains.json"
-OUTPUT_FILE = "output/openpagerank_analysis.json"
+OUTPUT_FILE = "output/pagerank_scores.json"
 OPENPAGERANK_API_KEY = os.getenv("OPENPAGERANK_API_KEY")
 
-# ✅ Load Competitor Domains
-with open(DOMAIN_FILE, "r") as f:
-    domains = json.load(f)
-
-# ✅ OpenPageRank API
-def fetch_openpagerank_data(domain):
-    url = "https://openpagerank.com/api/v1.0/getPageRank"
+def analyze_pagerank(competitor_domains):
+    """Analyze PageRank scores for competitor domains."""
+    print("\n🔍 Analyzing PageRank scores...")
     
-    headers = {
-        "API-OPR": OPENPAGERANK_API_KEY
-    }
+    # ✅ Load competitor domains if not provided
+    if not competitor_domains:
+        try:
+            with open(DOMAIN_FILE, "r") as f:
+                competitor_domains = json.load(f)
+        except Exception as e:
+            print(f"❌ Failed to load competitor domains: {e}")
+            return {}
 
-    params = {
-        "domains[]": domain
-    }
-
-    response = requests.get(url, headers=headers, params=params)
-    
-    if response.status_code == 200:
-        data = response.json().get("response", [])
-        if data:
-            return {
-                "domain": domain,
-                "page_rank": data[0].get("rank", "N/A"),
-                "page_rank_decimal": data[0].get("rank_decimal", "N/A")
-            }
-    else:
-        print(f"❌ Failed to fetch data for {domain}. Status: {response.status_code}")
-        return {
-            "domain": domain,
-            "page_rank": "N/A",
-            "page_rank_decimal": "N/A"
+    # ✅ Fetch PageRank data for each domain
+    pagerank_data = {}
+    for domain in competitor_domains:
+        url = f"https://openpagerank.com/api/v1.0/getPageRank?domains[]={domain}"
+        headers = {
+            "API-OPR": OPENPAGERANK_API_KEY
         }
 
-# ✅ Fetch backlink metrics for each domain
-backlink_metrics = []
-print("\n🔍 Fetching backlink metrics...")
-for domain in domains:
-    print(f"Fetching data for {domain}...")
-    metrics = fetch_openpagerank_data(domain)
-    backlink_metrics.append(metrics)
-    time.sleep(1)  # Rate limit handling
+        try:
+            response = requests.get(url, headers=headers)
 
-# ✅ Save Backlink Metrics
-with open(OUTPUT_FILE, "w") as f:
-    json.dump(backlink_metrics, f, indent=4)
+            if response.status_code == 200:
+                data = response.json().get("response", [])
+                if data:
+                    pagerank_data[domain] = {
+                        "page_rank": data[0].get("page_rank", "N/A"),
+                        "page_rank_decimal": data[0].get("page_rank_decimal", "N/A")
+                    }
+                    print(f"✅ Fetched PageRank for {domain}")
+                else:
+                    print(f"⚠️ No PageRank data found for {domain}")
 
-print(f"\n✅ Backlink metrics saved to: {OUTPUT_FILE}")
+            else:
+                print(f"❌ Failed to fetch data for {domain}. Status: {response.status_code}")
+
+        except Exception as e:
+            print(f"❌ Error fetching PageRank for {domain}: {e}")
+
+        sleep(1)  # Prevent hitting rate limits
+
+    # ✅ Save the PageRank data
+    with open(OUTPUT_FILE, "w") as f:
+        json.dump(pagerank_data, f, indent=4)
+
+    print(f"✅ PageRank scores saved to: {OUTPUT_FILE}")
+    return pagerank_data
+
+if __name__ == "__main__":
+    # Test the PageRank analysis
+    test_domains = ["example.com", "google.com"]
+    results = analyze_pagerank(test_domains)
+    print("\nPageRank Results:")
+    for domain, data in results.items():
+        print(f"{domain}: {data}")

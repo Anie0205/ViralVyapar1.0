@@ -3,6 +3,7 @@ import requests
 import json
 import pandas as pd
 from time import sleep
+from keyword_extractor import extract_keywords
 
 # ✅ API Constants
 SERPER_API_KEY = os.getenv("SERPER_API_KEY")
@@ -44,15 +45,22 @@ def extract_seo_data(query, results):
         return seo_data
 
     for result in results["organic"]:
+        # Extract keywords from title and snippet
+        title = result.get("title", "N/A")
+        snippet = result.get("snippet", "N/A")
+        combined_text = f"{title} {snippet}"
+        keywords = extract_keywords(combined_text, num_keywords=5)
+
         seo_data.append({
             "query": query,
-            "title": result.get("title", "N/A"),
+            "title": title,
             "link": result.get("link", "N/A"),
-            "snippet": result.get("snippet", "N/A"),
+            "snippet": snippet,
             "domain": result.get("domain", "N/A"),
             "displayed_link": result.get("displayedLink", "N/A"),
             "position": result.get("position", "N/A"),
-            "date": result.get("date", "N/A")
+            "date": result.get("date", "N/A"),
+            "keywords": ", ".join(keywords)  # Join keywords with comma for CSV storage
         })
     
     return seo_data

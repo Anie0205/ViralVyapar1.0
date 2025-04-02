@@ -1,67 +1,296 @@
-[
-    {
-        "domain": "firework.com",
-        "page_rank": null,
-        "page_rank_decimal": 3.91
-    },
-    {
-        "domain": "oberlo.com",
-        "page_rank": null,
-        "page_rank_decimal": 5.71
-    },
-    {
-        "domain": "shopify.com",
-        "page_rank": null,
-        "page_rank_decimal": 7.43
-    },
-    {
-        "domain": "clearlypayments.com",
-        "page_rank": null,
-        "page_rank_decimal": 3.68
-    },
-    {
-        "domain": "shopware.com",
-        "page_rank": null,
-        "page_rank_decimal": 4.61
-    },
-    {
-        "domain": "channelengine.com",
-        "page_rank": null,
-        "page_rank_decimal": 3.76
-    },
-    {
-        "domain": "similarweb.com",
-        "page_rank": null,
-        "page_rank_decimal": 6.24
-    },
-    {
-        "domain": "explodingtopics.com",
-        "page_rank": null,
-        "page_rank_decimal": 5.41
-    },
-    {
-        "domain": "sellbery.com",
-        "page_rank": null,
-        "page_rank_decimal": 4.33
-    },
-    {
-        "domain": "ravecapture.com",
-        "page_rank": null,
-        "page_rank_decimal": 3.2
-    },
-    {
-        "domain": "referralcandy.com",
-        "page_rank": null,
-        "page_rank_decimal": 4.64
-    },
-    {
-        "domain": "irpcommerce.com",
-        "page_rank": null,
-        "page_rank_decimal": 3.89
-    },
-    {
-        "domain": "salsify.com",
-        "page_rank": null,
-        "page_rank_decimal": 4.67
-    }
-]
+{
+    "mobile-magazine.com": [
+        {
+            "domain": "mobile-magazine.com",
+            "page_rank": null,
+            "page_rank_decimal": 4.45
+        }
+    ],
+    "thewrap.com": [
+        {
+            "domain": "thewrap.com",
+            "page_rank": null,
+            "page_rank_decimal": 5.31
+        }
+    ],
+    "denofgeek.com": [
+        {
+            "domain": "denofgeek.com",
+            "page_rank": null,
+            "page_rank_decimal": 5.14
+        }
+    ],
+    "youtube.com": [
+        {
+            "domain": "youtube.com",
+            "page_rank": null,
+            "page_rank_decimal": 10
+        }
+    ],
+    "cnet.com": [
+        {
+            "domain": "cnet.com",
+            "page_rank": null,
+            "page_rank_decimal": 6.68
+        }
+    ],
+    "latimes.com": [
+        {
+            "domain": "latimes.com",
+            "page_rank": null,
+            "page_rank_decimal": 6.71
+        }
+    ],
+    "imdb.com": [
+        {
+            "domain": "imdb.com",
+            "page_rank": null,
+            "page_rank_decimal": 7.24
+        }
+    ],
+    "help.netflix.com": [
+        {
+            "domain": "help.netflix.com",
+            "page_rank": null,
+            "page_rank_decimal": 5.44
+        }
+    ],
+    "variety.com": [
+        {
+            "domain": "variety.com",
+            "page_rank": null,
+            "page_rank_decimal": 6.19
+        }
+    ],
+    "techradar.com": [
+        {
+            "domain": "techradar.com",
+            "page_rank": null,
+            "page_rank_decimal": 6.34
+        }
+    ],
+    "yahoo.com": [
+        {
+            "domain": "yahoo.com",
+            "page_rank": null,
+            "page_rank_decimal": 6.97
+        }
+    ],
+    "netflix.pissedconsumer.com": [
+        {
+            "domain": "netflix.pissedconsumer.com",
+            "page_rank": null,
+            "page_rank_decimal": 2.32
+        }
+    ],
+    "deadline.com": [
+        {
+            "domain": "deadline.com",
+            "page_rank": null,
+            "page_rank_decimal": 5.57
+        }
+    ],
+    "hollywoodreporter.com": [
+        {
+            "domain": "hollywoodreporter.com",
+            "page_rank": null,
+            "page_rank_decimal": 5.99
+        }
+    ],
+    "screenrant.com": [
+        {
+            "domain": "screenrant.com",
+            "page_rank": null,
+            "page_rank_decimal": 5.87
+        }
+    ],
+    "netflix.com": [
+        {
+            "domain": "netflix.com",
+            "page_rank": null,
+            "page_rank_decimal": 6.79
+        }
+    ],
+    "cabletv.com": [
+        {
+            "domain": "cabletv.com",
+            "page_rank": null,
+            "page_rank_decimal": 4.52
+        }
+    ],
+    "twitter.com": [
+        {
+            "domain": "twitter.com",
+            "page_rank": null,
+            "page_rank_decimal": 10
+        }
+    ],
+    "businessinsider.com": [
+        {
+            "domain": "businessinsider.com",
+            "page_rank": null,
+            "page_rank_decimal": 7.07
+        }
+    ],
+    "tomsguide.com": [
+        {
+            "domain": "tomsguide.com",
+            "page_rank": null,
+            "page_rank_decimal": 5.78
+        }
+    ],
+    "evoca.tv": [
+        {
+            "domain": "evoca.tv",
+            "page_rank": null,
+            "page_rank_decimal": 3.4
+        }
+    ],
+    "play.google.com": [
+        {
+            "domain": "play.google.com",
+            "page_rank": null,
+            "page_rank_decimal": 9.31
+        }
+    ],
+    "quora.com": [
+        {
+            "domain": "quora.com",
+            "page_rank": null,
+            "page_rank_decimal": 6.94
+        }
+    ],
+    "apps.apple.com": [
+        {
+            "domain": "apps.apple.com",
+            "page_rank": null,
+            "page_rank_decimal": 8.38
+        }
+    ],
+    "forbes.com": [
+        {
+            "domain": "forbes.com",
+            "page_rank": null,
+            "page_rank_decimal": 7.45
+        }
+    ],
+    "x.com": [
+        {
+            "domain": "x.com",
+            "page_rank": null,
+            "page_rank_decimal": 7.91
+        }
+    ],
+    "msn.com": [
+        {
+            "domain": "msn.com",
+            "page_rank": null,
+            "page_rank_decimal": 6.44
+        }
+    ],
+    "dailymail.co.uk": [
+        {
+            "domain": "dailymail.co.uk",
+            "page_rank": null,
+            "page_rank_decimal": 6.64
+        }
+    ],
+    "facebook.com": [
+        {
+            "domain": "facebook.com",
+            "page_rank": null,
+            "page_rank_decimal": 10
+        }
+    ],
+    "vulture.com": [
+        {
+            "domain": "vulture.com",
+            "page_rank": null,
+            "page_rank_decimal": 5.48
+        }
+    ],
+    "about.netflix.com": [
+        {
+            "domain": "about.netflix.com",
+            "page_rank": null,
+            "page_rank_decimal": 4.95
+        }
+    ],
+    "tvguide.com": [
+        {
+            "domain": "tvguide.com",
+            "page_rank": null,
+            "page_rank_decimal": 5.24
+        }
+    ],
+    "ign.com": [
+        {
+            "domain": "ign.com",
+            "page_rank": null,
+            "page_rank_decimal": 5.78
+        }
+    ],
+    "aol.com": [
+        {
+            "domain": "aol.com",
+            "page_rank": null,
+            "page_rank_decimal": 6.11
+        }
+    ],
+    "mediaplaynews.com": [
+        {
+            "domain": "mediaplaynews.com",
+            "page_rank": null,
+            "page_rank_decimal": 4.79
+        }
+    ],
+    "vplayed.com": [
+        {
+            "domain": "vplayed.com",
+            "page_rank": null,
+            "page_rank_decimal": 4.06
+        }
+    ],
+    "whats-on-netflix.com": [
+        {
+            "domain": "whats-on-netflix.com",
+            "page_rank": null,
+            "page_rank_decimal": 4.82
+        }
+    ],
+    "pcmag.com": [
+        {
+            "domain": "pcmag.com",
+            "page_rank": null,
+            "page_rank_decimal": 6.48
+        }
+    ],
+    "editorial.rottentomatoes.com": [
+        {
+            "domain": "editorial.rottentomatoes.com",
+            "page_rank": null,
+            "page_rank_decimal": 4.93
+        }
+    ],
+    "boston.com": [
+        {
+            "domain": "boston.com",
+            "page_rank": null,
+            "page_rank_decimal": 5.75
+        }
+    ],
+    "agoodmovietowatch.com": [
+        {
+            "domain": "agoodmovietowatch.com",
+            "page_rank": null,
+            "page_rank_decimal": 4.41
+        }
+    ],
+    "reddit.com": [
+        {
+            "domain": "reddit.com",
+            "page_rank": null,
+            "page_rank_decimal": 8.32
+        }
+    ]
+}

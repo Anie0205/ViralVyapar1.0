@@ -3,6 +3,7 @@ import json
 import requests
 import time
 import re
+from typing import List
 
 # ✅ Load API Keys
 SERPER_API_KEY = os.getenv("SERPER_API_KEY")
@@ -171,6 +172,18 @@ def clean_and_deduplicate_queries(queries):
     return sorted(clean_queries)
 
 
+# ✅ Save Queries Function
+def save_queries(queries: List[str], file_path: str):
+    """Saves the generated queries to a JSON file."""
+    try:
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        with open(file_path, 'w', encoding='utf-8') as f:
+            json.dump(queries, f, indent=4, ensure_ascii=False)
+        print(f"\n✅ Queries saved to: {file_path}")
+    except Exception as e:
+        print(f"\n❌ Error saving queries: {e}")
+
+
 # ✅ Execution flow
 def generate_queries(domain):
     """Generate queries for the given domain"""
@@ -193,6 +206,10 @@ def generate_queries(domain):
             print("\n✅ Final Cleaned Queries for Integration:")
             for idx, query in enumerate(combined_queries, start=1):
                 print(f"{idx}. {query}")
+            
+            # Save the queries
+            save_queries(combined_queries, "output/seo_queries.json")
+            
             return combined_queries
         else:
             print("\n❌ No valid queries generated.")
